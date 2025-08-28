@@ -7,9 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.com.javarush.parse.m5.passwordmanager.entity.VaultItem;
-import ua.com.javarush.parse.m5.passwordmanager.repository.VaultItemRepository;
+import ua.com.javarush.parse.m5.passwordmanager.service.VaultItemService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -17,18 +18,30 @@ import java.util.List;
 @RequestMapping("/api/v1/vault-item")
 public class VaultItemController {
 
-  private final VaultItemRepository vaultItemRepository;
+  private final VaultItemService vaultItemService;
 
   @PostMapping("/create")
   public ResponseEntity<VaultItem> save(@RequestBody VaultItem item) {
-
-    VaultItem save = vaultItemRepository.save(item);
-
-    return new ResponseEntity<VaultItem>(save, HttpStatus.CREATED);
+    VaultItem save = vaultItemService.save(item);
+    return new ResponseEntity<>(save, HttpStatus.CREATED);
   }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<VaultItem> findById(@PathVariable Long id) {
+    Optional<VaultItem> item = vaultItemService.findById(id);
+    return item.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+  }
+
 
   @GetMapping("/all")
   public ResponseEntity<List<VaultItem>> getAll() {
-    return new ResponseEntity<>(vaultItemRepository.findAll(), HttpStatus.OK);
+    return new ResponseEntity<>(vaultItemService.findAll(), HttpStatus.OK);
+  }
+
+  @DeleteMapping("{id}")
+  public ResponseEntity<VaultItem> delete(@PathVariable Long id) {
+    vaultItemService.deleteById(id);
+
+    return ResponseEntity.ok().build();
   }
 }

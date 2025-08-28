@@ -1,0 +1,19 @@
+###
+POST http://localhost:8080/api/v1/vault-item/create
+Content-Type: application/json
+
+{
+  "name": "Test password",
+  "description": "Test description",
+  "login": "test@gmail.com",
+  "password": "testPassword"
+}
+
+###
+GET http://localhost:8080/api/v1/vault-item/all
+
+###
+GET http://localhost:8080/api/v1/vault-item/1
+
+###
+DELETE http://localhost:8080/api/v1/vault-item/1
