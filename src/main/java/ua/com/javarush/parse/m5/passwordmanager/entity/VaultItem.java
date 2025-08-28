@@ -8,17 +8,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SoftDelete;
 
 import java.util.Objects;
 
 @Entity
+@SoftDelete
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class VaultItem {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
   private String name;
