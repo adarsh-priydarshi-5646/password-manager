@@ -25,6 +25,8 @@ public class VaultItem {
 
   private String name;
 
+  private String resource;
+
   private String description;
 
   private String login;
@@ -36,13 +38,14 @@ public class VaultItem {
     if (o == null || getClass() != o.getClass()) return false;
 
     VaultItem vaultItem = (VaultItem) o;
-    return id == vaultItem.id && Objects.equals(name, vaultItem.name) && Objects.equals(description, vaultItem.description) && Objects.equals(login, vaultItem.login) && Objects.equals(password, vaultItem.password);
+    return id == vaultItem.id && Objects.equals(name, vaultItem.name) && Objects.equals(resource, vaultItem.resource) && Objects.equals(description, vaultItem.description) && Objects.equals(login, vaultItem.login) && Objects.equals(password, vaultItem.password);
   }
 
   @Override
   public int hashCode() {
     int result = Long.hashCode(id);
     result = 31 * result + Objects.hashCode(name);
+    result = 31 * result + Objects.hashCode(resource);
     result = 31 * result + Objects.hashCode(description);
     result = 31 * result + Objects.hashCode(login);
     result = 31 * result + Objects.hashCode(password);
