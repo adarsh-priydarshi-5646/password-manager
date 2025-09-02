@@ -15,7 +15,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/vault-item")
+@RequestMapping("/api/v1/vault")
 public class VaultItemController {
 
   private final VaultItemService vaultItemService;
@@ -30,6 +30,17 @@ public class VaultItemController {
   public ResponseEntity<VaultItem> findById(@PathVariable Long id) {
     Optional<VaultItem> item = vaultItemService.findById(id);
     return item.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+  }
+
+  @GetMapping
+  public ResponseEntity<List<VaultItem>> findByLogin(@RequestParam String login) {
+    List<VaultItem> byLogin = vaultItemService.findByLogin(login);
+
+    if (byLogin.isEmpty()) {
+      return ResponseEntity.notFound().build();
+    }
+
+    return ResponseEntity.ok(byLogin);
   }
 
 

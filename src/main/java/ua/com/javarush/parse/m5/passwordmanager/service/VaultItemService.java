@@ -26,6 +26,10 @@ public class VaultItemService {
     return vaultItemRepository.findById(id);
   }
 
+  public List<VaultItem> findByLogin(String login){
+    return vaultItemRepository.findVaultItemByLogin(login);
+  }
+
   public void deleteById(Long id){
     vaultItemRepository.deleteById(id);
   }
