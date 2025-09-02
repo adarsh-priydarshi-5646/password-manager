@@ -15,7 +15,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/vault-item")
+@RequestMapping("/api/v1/vault")
 public class VaultItemController {
 
   private final VaultItemService vaultItemService;
