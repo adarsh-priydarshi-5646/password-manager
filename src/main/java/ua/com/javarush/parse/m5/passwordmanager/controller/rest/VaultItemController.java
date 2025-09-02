@@ -32,6 +32,17 @@ public class VaultItemController {
     return item.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
   }
 
+  @GetMapping
+  public ResponseEntity<List<VaultItem>> findByLogin(@RequestParam String login) {
+    List<VaultItem> byLogin = vaultItemService.findByLogin(login);
+
+    if (byLogin.isEmpty()) {
+      return ResponseEntity.notFound().build();
+    }
+
+    return ResponseEntity.ok(byLogin);
+  }
+
 
   @GetMapping("/all")
   public ResponseEntity<List<VaultItem>> getAll() {
