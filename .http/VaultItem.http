@@ -4,6 +4,7 @@ Content-Type: application/json
 
 {
   "name": "Test password",
+  "resource": "test-resource.com",
   "description": "Test description",
   "login": "test@gmail.com",
   "password": "testPassword"
