@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <body>
 
 <div th:fragment="vaultTable(vaultItems)" class="overflow-x-auto rounded border border-gray-300 shadow-sm">
@@ -18,17 +18,16 @@
         </thead>
 
         <tbody class="divide-y divide-gray-200">
-        <tr th:each="vaultItem : ${vaultItems}" class="*:px-4 *:py-2 *:whitespace-nowrap *:text-gray-700">
-            <td class="font-medium" th:text="${vaultItem.id}"></td>
-            <td th:text="${vaultItem.name}"></td>
-            <td th:text="${vaultItem.resource}"></td>
-            <td th:text="${#strings.abbreviate(vaultItem.description, 30)}"></td>
-            <td th:text="${vaultItem.login}"></td>
-            <td>••••••••</td>
-
+        <tr th:each="vaultItem : ${vaultItems}"  class="*:text-gray-900 *:first:font-medium">
+            <td th:text="${vaultItem.id}" class="px-3 py-2 whitespace-nowrap"></td>
+            <td th:text="${vaultItem.name}" class="px-3 py-2 whitespace-nowrap"></td>
+            <td th:text="${vaultItem.resource}" class="px-3 py-2 whitespace-nowrap"></td>
+            <td th:text="${vaultItem.description}" class="px-3 py-2 whitespace-nowrap"></td>
+            <td th:text="${vaultItem.login}" class="px-3 py-2 whitespace-nowrap"></td>
+            <td th:text="${vaultItem.password}" class="px-3 py-2 whitespace-nowrap"></td>
             <td>
                 <a th:href="@{/vault-item/edit/{id}(id=${vaultItem.id})}"
-                   class="inline-block rounded bg-indigo-600 px-4 py-2 text-xs font-medium text-black hover:bg-indigo-700">
+                   class="px-3 py-2 whitespace-nowrap">
                     Edit
                 </a>
             </td>
