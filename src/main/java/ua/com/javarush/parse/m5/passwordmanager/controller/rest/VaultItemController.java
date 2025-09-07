@@ -32,6 +32,26 @@ public class VaultItemController {
     return item.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
   }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<VaultItem> update(@PathVariable Long id, @RequestBody VaultItem updatedItemData) {
+        Optional<VaultItem> existingItemOptional = vaultItemService.findById(id);
+
+        if (existingItemOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        VaultItem existingItem = existingItemOptional.get();
+        existingItem.setName(updatedItemData.getName());
+        existingItem.setResource(updatedItemData.getResource());
+        existingItem.setDescription(updatedItemData.getDescription());
+        existingItem.setLogin(updatedItemData.getLogin());
+        existingItem.setPassword(updatedItemData.getPassword());
+
+        VaultItem savedItem = vaultItemService.save(existingItem);
+
+        return ResponseEntity.ok(savedItem);
+    }
+
   @GetMapping
   public ResponseEntity<List<VaultItem>> findByLogin(@RequestParam String login) {
     List<VaultItem> byLogin = vaultItemService.findByLogin(login);
@@ -42,7 +62,6 @@ public class VaultItemController {
 
     return ResponseEntity.ok(byLogin);
   }
-
 
   @GetMapping("/all")
   public ResponseEntity<List<VaultItem>> getAll() {
