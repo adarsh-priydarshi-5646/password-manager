@@ -3,9 +3,7 @@ package ua.com.javarush.parse.m5.passwordmanager.controller.web;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ua.com.javarush.parse.m5.passwordmanager.entity.VaultItem;
 import ua.com.javarush.parse.m5.passwordmanager.service.VaultItemService;
 
@@ -28,4 +26,16 @@ public class VaultControllerWeb {
     return "vault";
 
   }
+
+    @GetMapping("/create")
+    public String showCreateForm(Model model) {
+        model.addAttribute("vault", new VaultItem());
+        return "create-vault";
+    }
+
+    @PostMapping("/save")
+    public String saveNewItem(@ModelAttribute("vault") VaultItem item) {
+        vaultItemService.save(item);
+        return "redirect:/";
+    }
 }
