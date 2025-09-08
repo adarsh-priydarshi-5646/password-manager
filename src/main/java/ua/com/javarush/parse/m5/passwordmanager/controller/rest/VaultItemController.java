@@ -34,22 +34,9 @@ public class VaultItemController {
 
     @PutMapping("/{id}")
     public ResponseEntity<VaultItem> update(@PathVariable Long id, @RequestBody VaultItem updatedItemData) {
-        Optional<VaultItem> existingItemOptional = vaultItemService.findById(id);
-
-        if (existingItemOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        VaultItem existingItem = existingItemOptional.get();
-        existingItem.setName(updatedItemData.getName());
-        existingItem.setResource(updatedItemData.getResource());
-        existingItem.setDescription(updatedItemData.getDescription());
-        existingItem.setLogin(updatedItemData.getLogin());
-        existingItem.setPassword(updatedItemData.getPassword());
-
-        VaultItem savedItem = vaultItemService.save(existingItem);
-
-        return ResponseEntity.ok(savedItem);
+        return vaultItemService.update(id, updatedItemData)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
   @GetMapping

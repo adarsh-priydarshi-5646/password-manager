@@ -36,9 +36,8 @@ public class VaultControllerWeb {
     }
 
     @PostMapping("/update/{id}")
-    public String updateItem(@PathVariable Long id, @ModelAttribute("vault") VaultItem item) {
-        item.setId(id);
-        vaultItemService.save(item);
+    public String updateItem(@PathVariable Long id, @ModelAttribute("vault") VaultItem itemFromForm) {
+        vaultItemService.update(id, itemFromForm);
         return "redirect:/";
     }
 }
