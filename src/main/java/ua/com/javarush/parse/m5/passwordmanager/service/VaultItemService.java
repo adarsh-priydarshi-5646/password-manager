@@ -1,5 +1,6 @@
 package ua.com.javarush.parse.m5.passwordmanager.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ua.com.javarush.parse.m5.passwordmanager.entity.VaultItem;
@@ -18,7 +19,23 @@ public class VaultItemService {
     return vaultItemRepository.save(vaultItem);
   }
 
-  public List<VaultItem> findAll() {
+    @Transactional
+    public Optional<VaultItem> update(Long id, VaultItem updatedItemData) {
+        return vaultItemRepository.findById(id)
+                .map(existingItem -> {
+                    existingItem.setName(updatedItemData.getName());
+                    existingItem.setResource(updatedItemData.getResource());
+                    existingItem.setLogin(updatedItemData.getLogin());
+                    existingItem.setDescription(updatedItemData.getDescription());
+                    if (updatedItemData.getPassword() != null && !updatedItemData.getPassword().isEmpty()) {
+                        existingItem.setPassword(updatedItemData.getPassword());
+                    }
+                    return vaultItemRepository.save(existingItem);
+                });
+    }
+
+
+    public List<VaultItem> findAll() {
     return vaultItemRepository.findAll();
   }
 
