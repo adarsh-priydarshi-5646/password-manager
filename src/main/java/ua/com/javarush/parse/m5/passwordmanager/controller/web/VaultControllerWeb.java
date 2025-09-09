@@ -22,7 +22,6 @@ public class VaultControllerWeb {
     byId.ifPresent(vaultItem -> {
       model.addAttribute("vault", vaultItem);
     });
-
     return "vault";
 
   }
@@ -36,6 +35,21 @@ public class VaultControllerWeb {
     @PostMapping("/save")
     public String saveNewItem(@ModelAttribute("vault") VaultItem item) {
         vaultItemService.save(item);
+        return "redirect:/";
+    }
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        Optional<VaultItem> byId = vaultItemService.findById(id);
+        if (byId.isPresent()) {
+            model.addAttribute("vault", byId.get());
+            return "edit-vault";
+        }
+        return "redirect:/";
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateItem(@PathVariable Long id, @ModelAttribute("vault") VaultItem itemFromForm) {
+        vaultItemService.update(id, itemFromForm);
         return "redirect:/";
     }
 }
