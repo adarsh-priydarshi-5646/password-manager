@@ -23,8 +23,20 @@ public class VaultControllerWeb {
       model.addAttribute("vault", vaultItem);
     });
     return "vault";
+
   }
 
+    @GetMapping("/create")
+    public String showCreateForm(Model model) {
+        model.addAttribute("vault", new VaultItem());
+        return "create-vault";
+    }
+
+    @PostMapping("/save")
+    public String saveNewItem(@ModelAttribute("vault") VaultItem item) {
+        vaultItemService.save(item);
+        return "redirect:/";
+    }
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         Optional<VaultItem> byId = vaultItemService.findById(id);
