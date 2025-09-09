@@ -21,3 +21,16 @@ DELETE http://localhost:8080/api/v1/vault/1
 
 ### Find by login
 GET http://localhost:8080/api/v1/vault
+
+
+### Update
+PUT http://localhost:8080/api/v1/vault/1
+Content-Type: application/json
+
+{
+  "name": "Test password Updated REST",
+  "resource": "test123",
+  "description": "Test description 123",
+  "login": "test123@gmail.com",
+  "password": "TEST"
+}
