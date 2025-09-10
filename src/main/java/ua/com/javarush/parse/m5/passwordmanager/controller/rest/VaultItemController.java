@@ -43,6 +43,14 @@ public class VaultItemController {
     return ResponseEntity.ok(byLogin);
   }
 
+  @GetMapping("/resource")
+  public ResponseEntity<List<VaultItem>> findByResource(@RequestParam String resource) {
+    List<VaultItem> byResource = vaultItemService.findByResource(resource);
+    if (byResource.isEmpty()) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok(byResource);
+  }
 
   @GetMapping("/all")
   public ResponseEntity<List<VaultItem>> getAll() {
