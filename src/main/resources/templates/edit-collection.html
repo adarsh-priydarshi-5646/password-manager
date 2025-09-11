@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Collection</title>
+    <link th:href="@{/main.css}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+<div class="min-h-screen flex flex-col">
+    <div th:replace="~{component/header}"></div>
+
+    <main class="mx-auto max-w-screen-sm px-4 sm:px-6 lg:px-8 flex-1 w-full pb-10">
+        <h1 class="mt-8 mb-6 text-2xl font-semibold text-stone-950">Edit Collection</h1>
+
+        <form th:action="@{'/collections/update/' + ${collection.id}}" method="post" th:object="${collection}" class="space-y-4">
+            <input th:field="*{id}" type="hidden"/>
+            <div>
+                <label class="mb-1 block text-sm font-medium text-gray-700">Name</label>
+                <input th:field="*{name}" type="text" required class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-stone-950 focus:ring-1 focus:ring-stone-950"/>
+            </div>
+            <div>
+                <label class="mb-1 block text-sm font-medium text-gray-700">Description</label>
+                <textarea th:field="*{description}" rows="3" class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-stone-950 focus:ring-1 focus:ring-stone-950"></textarea>
+            </div>
+            <div>
+                <label class="mb-1 block text-sm font-medium text-gray-700">Color</label>
+                <input th:field="*{color}" type="color" class="h-10 w-16 cursor-pointer rounded-md border border-gray-300 p-1"/>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button type="submit" class="rounded-md bg-stone-950 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-slate-700">Update</button>
+                <a th:href="@{/}" class="text-sm text-gray-600 hover:text-gray-900">Cancel</a>
+            </div>
+        </form>
+    </main>
+
+    <div th:replace="~{component/footer}"></div>
+</div>
+</body>
+
+</html>
+
+
