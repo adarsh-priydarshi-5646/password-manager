@@ -17,6 +17,16 @@
         document.addEventListener('DOMContentLoaded', function() {
             const username = document.getElementById('username');
             if (username) username.focus();
+            const logo = document.getElementById('logoLink');
+            if (logo) {
+                logo.addEventListener('click', function(e) {
+                    // Ensure hard redirect to home even if templating fails
+                    if (!logo.getAttribute('href')) {
+                        e.preventDefault();
+                        window.location.href = '/';
+                    }
+                });
+            }
         });
     </script>
 </head>
