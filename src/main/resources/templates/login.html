@@ -20,11 +20,9 @@
             const logo = document.getElementById('logoLink');
             if (logo) {
                 logo.addEventListener('click', function(e) {
-                    // Ensure hard redirect to home even if templating fails
-                    if (!logo.getAttribute('href')) {
-                        e.preventDefault();
-                        window.location.href = '/';
-                    }
+                    // Force redirect to home from login page
+                    e.preventDefault();
+                    window.location.href = '/';
                 });
             }
         });
