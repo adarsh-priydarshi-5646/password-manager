@@ -1,6 +1,26 @@
 spring:
   application:
     name: password-manager
+  datasource:
+    url: jdbc:postgresql://localhost:5432/password-manager?currentSchema=public&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 60000
+      pool-name: HikariCP
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
