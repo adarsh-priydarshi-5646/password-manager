@@ -1,9 +1,6 @@
 package ua.com.javarush.parse.m5.passwordmanager.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,12 +30,16 @@ public class VaultItem {
 
   private String password;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "collection_id")
+  private Collection collection;
+
   @Override
   public boolean equals(Object o) {
     if (o == null || getClass() != o.getClass()) return false;
 
     VaultItem vaultItem = (VaultItem) o;
-    return id == vaultItem.id && Objects.equals(name, vaultItem.name) && Objects.equals(resource, vaultItem.resource) && Objects.equals(description, vaultItem.description) && Objects.equals(login, vaultItem.login) && Objects.equals(password, vaultItem.password);
+    return id == vaultItem.id && Objects.equals(name, vaultItem.name) && Objects.equals(resource, vaultItem.resource) && Objects.equals(description, vaultItem.description) && Objects.equals(login, vaultItem.login) && Objects.equals(password, vaultItem.password) && Objects.equals(collection, vaultItem.collection);
   }
 
   @Override
@@ -49,6 +50,7 @@ public class VaultItem {
     result = 31 * result + Objects.hashCode(description);
     result = 31 * result + Objects.hashCode(login);
     result = 31 * result + Objects.hashCode(password);
+    result = 31 * result + Objects.hashCode(collection);
     return result;
   }
 }
