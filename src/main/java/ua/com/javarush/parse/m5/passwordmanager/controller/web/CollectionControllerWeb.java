@@ -1,17 +1,23 @@
 package ua.com.javarush.parse.m5.passwordmanager.controller.web;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ua.com.javarush.parse.m5.passwordmanager.entity.Collection;
+import ua.com.javarush.parse.m5.passwordmanager.service.CollectionService;
 
 import java.util.Optional;
 
 @Slf4j
 @Controller
 @RequestMapping("/collections")
+@RequiredArgsConstructor
 public class CollectionControllerWeb {
+
+    private final CollectionService collectionService;
 
     @GetMapping("/create")
     public String showCreateForm(Model model) {
@@ -21,26 +27,46 @@ public class CollectionControllerWeb {
 
     @PostMapping("/save")
     public String save(@ModelAttribute("collection") CollectionForm form) {
-        log.info("[Collections] Create requested: name='{}', color='{}'", form.getName(), form.getColor());
+        Collection collection = new Collection();
+        collection.setName(form.getName());
+        collection.setDescription(form.getDescription());
+        collection.setColour(form.getColor());
+        collection.setIcon(form.getIcon());
+        collectionService.save(collection);
         return "redirect:/";
     }
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
-        // Placeholder: in a real impl, fetch by id
-        CollectionForm existing = new CollectionForm();
-        existing.setId(id);
-        existing.setName("Sample Collection");
-        existing.setDescription("Edit this collection");
-        existing.setColor("#1f2937");
-        model.addAttribute("collection", existing);
-        return "edit-collection";
+        Optional<Collection> existing = collectionService.findById(id);
+        if (existing.isPresent()) {
+            CollectionForm form = new CollectionForm();
+            form.setId(existing.get().getId());
+            form.setName(existing.get().getName());
+            form.setDescription(existing.get().getDescription());
+            form.setColor(existing.get().getColour());
+            form.setIcon(existing.get().getIcon());
+            model.addAttribute("collection", form);
+            return "edit-collection";
+        }
+        return "redirect:/";
     }
 
     @PostMapping("/update/{id}")
     public String update(@PathVariable Long id, @ModelAttribute("collection") CollectionForm form) {
-        log.info("[Collections] Update requested for id={}, name='{}'", id, form.getName());
-        return "redirect:/";
+        Collection collection = new Collection();
+        collection.setName(form.getName());
+        collection.setDescription(form.getDescription());
+        collection.setColour(form.getColor());
+        collection.setIcon(form.getIcon());
+        collectionService.update(id, collection);
+        return "redirect:/collections";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        collectionService.deleteById(id);
+        return "redirect:/collections";
     }
 
     @Data
@@ -49,6 +75,7 @@ public class CollectionControllerWeb {
         private String name;
         private String description;
         private String color;
+        private String icon;
     }
 }
 
