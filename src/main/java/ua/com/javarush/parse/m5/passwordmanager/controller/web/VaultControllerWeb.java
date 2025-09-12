@@ -52,4 +52,10 @@ public class VaultControllerWeb {
         vaultItemService.update(id, itemFromForm);
         return "redirect:/";
     }
+
+    @DeleteMapping("/delete/{id}")
+    public String deleteItem(@PathVariable Long id) {
+        vaultItemService.deleteById(id);
+        return "redirect:/";
+    }
 }
