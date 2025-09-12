@@ -68,6 +68,15 @@ class VaultItemControllerTest {
     }
 
     @Test
+    void whenGetByIdNotFound_thenReturns404() throws Exception {
+        when(service.findById(1L)).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/v1/vault/{id}", 1L))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Vault item with id '1' not found"));
+    }
+
+    @Test
     void whenPut_thenUpdatesItem() throws Exception {
         VaultItem item = new VaultItem();
         item.setId(1L);
@@ -81,6 +90,17 @@ class VaultItemControllerTest {
     }
 
     @Test
+    void whenPutNotFound_thenReturns404() throws Exception {
+        when(service.update(anyLong(), any(VaultItem.class))).thenReturn(Optional.empty());
+
+        mockMvc.perform(put("/api/v1/vault/{id}", 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(new VaultItem())))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Vault item with id '1' not found"));
+    }
+
+    @Test
     void whenGetByLogin_thenReturnsItems() throws Exception {
         VaultItem item = new VaultItem();
         item.setLogin("testuser");
@@ -89,6 +109,35 @@ class VaultItemControllerTest {
         mockMvc.perform(get("/api/v1/vault").param("login", "testuser"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].login").value("testuser"));
+    }
+
+    @Test
+    void whenGetByLoginNotFound_thenReturns404() throws Exception {
+        when(service.findByLogin("testuser")).thenReturn(List.of());
+
+        mockMvc.perform(get("/api/v1/vault").param("login", "testuser"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Vault items for login 'testuser' not found"));
+    }
+
+    @Test
+    void whenGetByResource_thenReturnsItems() throws Exception {
+        VaultItem item = new VaultItem();
+        item.setResource("testresource");
+        when(service.findByResource("testresource")).thenReturn(List.of(item));
+
+        mockMvc.perform(get("/api/v1/vault/resource").param("resource", "testresource"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].resource").value("testresource"));
+    }
+
+    @Test
+    void whenGetByResourceNotFound_thenReturns404() throws Exception {
+        when(service.findByResource("testresource")).thenReturn(List.of());
+
+        mockMvc.perform(get("/api/v1/vault/resource").param("resource", "testresource"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Vault items for resource 'testresource' not found"));
     }
 
     @Test
