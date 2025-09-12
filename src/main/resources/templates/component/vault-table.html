@@ -3,31 +3,52 @@
 <body>
 
 <div th:fragment="vaultTable(vaultItems)" class="overflow-x-auto rounded border border-gray-300 shadow-sm">
-  <table class="min-w-full divide-y-2 divide-gray-200">
+    <table class="min-w-full divide-y-2 divide-gray-200">
 
-    <thead class="ltr:text-left rtl:text-right">
-      <tr class="*:font-medium *:text-gray-900">
-        <th class="px-3 py-2 whitespace-nowrap">Id</th>
-        <th class="px-3 py-2 whitespace-nowrap">Name</th>
-        <th class="px-3 py-2 whitespace-nowrap">Resource</th>
-        <th class="px-3 py-2 whitespace-nowrap">Description</th>
-        <th class="px-3 py-2 whitespace-nowrap">Login</th>
-        <th class="px-3 py-2 whitespace-nowrap">Password</th>
-      </tr>
-    </thead>
+        <thead class="ltr:text-left rtl:text-right">
+        <tr class="*:font-medium *:text-gray-900">
+            <th class="px-3 py-2 whitespace-nowrap">Id</th>
+            <th class="px-3 py-2 whitespace-nowrap">Name</th>
+            <th class="px-3 py-2 whitespace-nowrap">Resource</th>
+            <th class="px-3 py-2 whitespace-nowrap">Description</th>
+            <th class="px-3 py-2 whitespace-nowrap">Login</th>
+            <th class="px-3 py-2 whitespace-nowrap">Password</th>
+            <th class="px-3 py-2 whitespace-nowrap text-center">Actions</th>
+        </tr>
+        </thead>
 
-    <tbody class="divide-y divide-gray-200">
-      <tr th:each="vaultItem : ${vaultItems}"  class="*:text-gray-900 *:first:font-medium">
-        <td th:text="${vaultItem.id}" class="px-3 py-2 whitespace-nowrap"></td>
-        <td th:text="${vaultItem.name}" class="px-3 py-2 whitespace-nowrap"></td>
-        <td th:text="${vaultItem.resource}" class="px-3 py-2 whitespace-nowrap"></td>
-        <td th:text="${vaultItem.description}" class="px-3 py-2 whitespace-nowrap"></td>
-        <td th:text="${vaultItem.login}" class="px-3 py-2 whitespace-nowrap"></td>
-        <td th:text="${vaultItem.password}" class="px-3 py-2 whitespace-nowrap"></td>
-      </tr>
-    </tbody>
+        <tbody class="divide-y divide-gray-200">
+        <tr th:each="vaultItem : ${vaultItems}"  class="*:text-gray-900 *:first:font-medium">
+            <td th:text="${vaultItem.id}" class="px-3 py-2 whitespace-nowrap"></td>
+            <td th:text="${vaultItem.name}" class="px-3 py-2 whitespace-nowrap"></td>
+            <td th:text="${vaultItem.resource}" class="px-3 py-2 whitespace-nowrap"></td>
+            <td th:text="${vaultItem.description}" class="px-3 py-2 whitespace-nowrap"></td>
+            <td th:text="${vaultItem.login}" class="px-3 py-2 whitespace-nowrap"></td>
+            <td th:text="${vaultItem.password}" class="px-3 py-2 whitespace-nowrap"></td>
+            <td>
+                <a th:href="@{/vault-item/edit/{id}(id=${vaultItem.id})}"
+                   class="px-3 py-2 whitespace-nowrap">
+                    Edit
+                </a>
+                <form th:action="@{/vault-item/delete/{id}(id=${vaultItem.id})}"
+                      th:method="delete"
+                      class="inline-block ml-2"
+                onsubmit="return confirm('Are you sure you want to delete this item?');">
 
-  </table>
+                <input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                <button type="submit"
+                        class="inline-block rounded px-3 py-2 text-xm font-medium text-black
+                       border-2 border-transparent transition-colors
+                       hover:border-red-700">
+                    Remove
+                </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
 </body>
+</html>

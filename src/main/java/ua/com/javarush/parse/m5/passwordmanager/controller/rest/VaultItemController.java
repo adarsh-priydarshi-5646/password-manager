@@ -32,6 +32,13 @@ public class VaultItemController {
     return item.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
   }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<VaultItem> update(@PathVariable Long id, @RequestBody VaultItem updatedItemData) {
+        return vaultItemService.update(id, updatedItemData)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
   @GetMapping
   public ResponseEntity<List<VaultItem>> findByLogin(@RequestParam String login) {
     List<VaultItem> byLogin = vaultItemService.findByLogin(login);
